@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot name="sweeper_complete" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- Modello generico del robot: telaio, ruote e sensori-->
+<xacro:include filename="$(find autosweep_description)/urdf/sweeper_complete.urdf.xacro" />
+
+<!-- Hardware simulato esposto a ros2 control-->
+<ros2_control name="GazeboSimSystem" type="system">
+
+    <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <!-- Interfaccia sterzo -->
+    <joint name="front_steering_joint">
+        <command_interface name="position">
+            <param name="min"> -0.7854 </param>
+            <param name="max"> 0.7854 </param>
+        </command_interface>
+
+        <state_interface name="position" />
+        <state_interface name="velocity" />
+    </joint>
+
+    <!-- Interfaccia ruota motrice anteriore -->
+    <joint name="front_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-16.0</param>
+        <param name="max">16.0</param>
+      </command_interface>
+
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+
+    <!-- Interfaccia ruote posteriori -->
+    <joint name="rear_left_wheel_joint">
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+
+    <joint name="rear_right_wheel_joint">
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+
+  </ros2_control>
+
+  <!-- Collegamento tra interfacce ros2_control e giunti in Gazebo -->
+  <gazebo>
+    <plugin
+      filename="libgz_ros2_control-system.so"
+      name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+
+      <parameters>
+        $(find autosweep_gazebo)/config/sweeper_controllers.yaml
+      </parameters>
+
+      <ros>
+        <remapping> /tricycle_controller/cmd_vel:=/cmd_vel </remapping>
+        <remapping> /tricycle_controller/odom:=/odom </remapping>
+      </ros>
+    </plugin>
+  </gazebo>
+
+</robot>

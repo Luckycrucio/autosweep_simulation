@@ -1,0 +1,47 @@
+source /opt/ros/jazzy/setup.bash
+
+----------------------------------------------------
+
+BUILD:
+cd /home/flexsight/Desktop/Giuseppe/Eureka
+conda deactivate
+source /opt/ros/jazzy/setup.bash
+
+colcon build \
+  --base-paths autosweep_description autosweep_gazebo \
+  --symlink-install \
+  --packages-select autosweep_gazebo \
+  --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
+
+----------------------------------------------------
+
+RUN:
+source install/setup.bash
+ros2 launch autosweep_gazebo simulation_launcher.py
+
+----------------------------------------------------
+
+GAZEBO TOPICS:
+gz topic -i -t /lidar_front
+gz topic -i -t /lidar_front/points
+
+gz topic -i -t /lidar_rear
+gz topic -i -t /lidar_rear/points
+
+gz topic -i -t /rgbd_camera/image
+gz topic -i -t /rgbd_camera/depth_image
+gz topic -i -t /rgbd_camera/camera_info
+gz topic -i -t /rgbd_camera/points
+
+----------------------------------------------------
+
+ROS2 TOPICS:
+ros2 topic list | sort | rg 'lidar|rgbd'
+/lidar_front/points
+/lidar_front/scan
+/lidar_rear/points
+/lidar_rear/scan
+/rgbd_camera/camera_info
+/rgbd_camera/depth_image
+/rgbd_camera/image
+/rgbd_camera/points

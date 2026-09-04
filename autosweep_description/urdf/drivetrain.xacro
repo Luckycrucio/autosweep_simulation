@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!--TODO: Controlla che le dimensioni siano corrette-->
+    <!-- Dimensioni Rider 1201 EB-->
+    <xacro:property name="wheel_radius" value="0.125"/>
+    <xacro:property name="front_wheel_width" value="0.101"/>
+    <xacro:property name="rear_wheel_width" value="0.08"/>
+
+    <!-- Posizioni provvisorie delle ruote -->
+    <xacro:property name="front_x" value="0.453"/>
+    <xacro:property name="rear_x" value="-0.324"/>
+    <xacro:property name="rear_half_track" value="0.4455"/>
+    <xacro:property name="wheel_z" value="-0.208"/>
+
+    <!-- Range mobilità sterzo TODO: sostituire con quello corretto -->
+    <xacro:property name="steering_limit" value="0.7854"/>
+
+    <!-- Macro per il footprint della base -->
+    <xacro:macro name="sweeper_base_footprint" params="child">
+        <link name="base_footprint"/>
+
+        <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="${child}"/>
+        <origin
+            xyz="${-rear_x} 0 ${wheel_radius - wheel_z}"
+            rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="sweeper_wheel_link" params="name width mass">
+        <link name="${name}">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="${mass}"/>
+
+            <!-- Inerzia di un cilindro pieno con asse lungo Y -->
+            <inertia
+            ixx="${mass * (3.0 * wheel_radius * wheel_radius + width * width) / 12.0}"
+            ixy="0"
+            ixz="0"
+            iyy="${mass * wheel_radius * wheel_radius / 2.0}"
+            iyz="0"
+            izz="${mass * (3.0 * wheel_radius * wheel_radius + width * width) / 12.0}" />
+        </inertial>
+        <!--
+            Per ora non aggiungiamo il visual: le ruote sono già visibili
+            nella mesh completa del telaio.
+        -->
+        <collision>
+            <origin xyz="0 0 0" rpy="1.57079632679 0 0"/>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${width}"/>
+            </geometry>
+        </collision>
+        </link>
+    </xacro:macro>
+
+
+
+    <xacro:macro name="sweeper_drivetrain" params="parent">
+
+        <!-- Supporto virtuale che ruota con lo sterzo -->
+        <link name="front_steering_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="0.1"/>
+                <inertia
+                ixx="0.001" ixy="0" ixz="0"
+                iyy="0.001" iyz="0"
+                izz="0.001" />
+            </inertial>
+        </link>
+
+        <joint name="front_steering_joint" type="revolute">
+            <parent link="${parent}"/>
+            <child link="front_steering_link"/>
+            <origin xyz="${front_x} 0 ${wheel_z}" rpy="0 0 0"/>
+            <axis xyz="0 0 1"/>
+            <limit
+                effort="100"
+                velocity="1.0"
+                lower="${-steering_limit}"
+                upper="${steering_limit}"/>
+            <dynamics damping="0.2" friction="0.1"/>
+        </joint>
+
+        <!-- Ruote -->
+        <!-- Front wheel -->
+        <xacro:sweeper_wheel_link
+            name="front_wheel_link"
+            width="${front_wheel_width}"
+            mass="1.0" />
+
+        <joint name="front_wheel_joint" type="continuous">
+            <parent link="front_steering_link"/>
+            <child link="front_wheel_link"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="100" velocity="16.0"/>
+            <dynamics damping="0.05" friction="0.0"/>
+        </joint>
+
+        <!-- Rear left wheel -->
+        <xacro:sweeper_wheel_link
+            name="rear_left_wheel_link"
+            width="${rear_wheel_width}"
+            mass="1.0" />
+
+        <joint name="rear_left_wheel_joint" type="continuous">
+            <parent link="${parent}"/>
+            <child link="rear_left_wheel_link"/>
+            <origin xyz="${rear_x} ${rear_half_track} ${wheel_z}" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="50" velocity="16.0"/>
+            <dynamics damping="0.05" friction="0.0"/>
+        </joint>
+
+        <!-- Rear right wheel -->
+        <xacro:sweeper_wheel_link
+            name="rear_right_wheel_link"
+            width="${rear_wheel_width}"
+            mass="1.0" />
+
+        <joint name="rear_right_wheel_joint" type="continuous">
+            <parent link="${parent}"/>
+            <child link="rear_right_wheel_link"/>
+            <origin xyz="${rear_x} ${-rear_half_track} ${wheel_z}" rpy="0 0 0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="50" velocity="16.0"/>
+            <dynamics damping="0.05" friction="0.0"/>
+        </joint>
+
+    </xacro:macro>
+
+</robot>
+

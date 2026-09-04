@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com)
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="OS_70">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.124450544387159 0.0590801370510477 -0.0794266041946113"
+        rpy="0 0 0" />
+      <mass
+        value="265.13716831964" />
+      <inertia
+        ixx="5.97706926862166"
+        ixy="0.0418455171998269"
+        ixz="0.704107777888971"
+        iyy="9.66902473416374"
+        iyz="0.00364512146478583"
+        izz="6.89463051457995" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find autosweep_description)/meshes/sweeper_semplificata_5mm.stl"
+          scale="0.001 0.001 0.001" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+
+    <!-- Parte inferiore rigida del telaio -->
+    <collision name="base_lower_collision">
+      <origin xyz="0.01 0 0.085" rpy="0 0 0" />
+      <geometry>
+        <box size="1.38 0.88 0.27" />
+      </geometry>
+    </collision>
+
+    <!-- Parte centrale della carrozzeria -->
+    <collision name="base_middle_collision">
+      <origin xyz="-0.10 0 0.35" rpy="0 0 0" />
+      <geometry>
+        <box size="1.28 0.89 0.26" />
+      </geometry>
+    </collision>
+
+    <!-- Parte superiore: seduta, cofano e struttura alta -->
+    <collision name="base_upper_collision">
+      <origin xyz="-0.03 0 0.69" rpy="0 0 0" />
+      <geometry>
+        <box size="1.26 0.77 0.42" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

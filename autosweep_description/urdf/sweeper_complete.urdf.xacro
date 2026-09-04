@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot name="sweeper_complete" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Load the vehicle -->
+  <xacro:include filename="$(find autosweep_description)/urdf/sweeper.urdf" />
+
+  <!-- Load the sensors -->
+  <xacro:include filename="$(find autosweep_description)/urdf/lidar_dome.xacro" />
+
+  <xacro:include filename="$(find autosweep_description)/urdf/rgbd_camera.xacro" />
+
+  <!-- Load the drivetrain -->
+  <xacro:include filename="$(find autosweep_description)/urdf/drivetrain.xacro" />
+  <xacro:sweeper_base_footprint child="base_link" />
+  <xacro:sweeper_drivetrain parent="base_link" />
+
+  <!-- Pose provvisoria del LiDAR anteriore -->
+  <xacro:lidar_dome
+    name="lidar_front"
+    parent="base_link"
+    xyz="0.7 0 0.40"
+    rpy="0 1.5707 0"
+    topic="lidar_front" />
+
+  <!-- Pose provvisoria del LiDAR posteriore -->
+  <xacro:lidar_dome
+    name="lidar_rear"
+    parent="base_link"
+    xyz="-0.78 0 0.40"
+    rpy="0 -1.5707 0"
+    topic="lidar_rear" />
+
+  <!-- Pose provvisoria della Intel RealSense D456 -->
+  <xacro:depth_camera
+    name="rgbd_camera"
+    parent="base_link"
+    xyz="0.65 0 0.50"
+    rpy="0 0 0"
+    topic="rgbd_camera" />
+
+</robot>

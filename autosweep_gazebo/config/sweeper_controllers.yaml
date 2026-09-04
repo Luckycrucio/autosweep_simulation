@@ -1,0 +1,44 @@
+controller_manager:
+  ros__parameters:
+    #Prima iterazione: un aggiornamento ogni 10 step fisici da 1 ms.
+    update_rate: 100
+    use_sim_time: true
+
+joint_state_broadcaster:
+  ros__parameters:
+    type: joint_state_broadcaster/JointStateBroadcaster
+    update_rate: 100
+    use_sim_time: true
+
+tricycle_controller:
+  ros__parameters:
+    type: tricycle_controller/TricycleController
+
+    # Nomi delle interfacce dei joint del robot
+    traction_joint_name: front_wheel_joint
+    steering_joint_name: front_steering_joint
+
+    # TODO: Geometria provvisoria da calibrare sul prototipo
+    wheelbase: 0.777 #passo
+    wheel_radius: 0.125
+
+    # Odometry calcolata dal feedback delle ruote
+    odom_frame_id: odom
+    base_frame_id: base_footprint
+    open_loop: false
+    enable_odom_tf: true
+    odom_only_twist: false
+
+    # TODO: Valori iniziali raccomandati, da calibrare in futuro.
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    velocity_rolling_window_size: 10
+
+    # Limiti provvisori già presenti nel drivetrain.
+    steering:
+      min_position: -0.7854
+      max_position: 0.7854
+      max_velocity: 1.0
+
+    # Arresta il veicolo dopo 500 ms senza nuovi comandi.
+    cmd_vel_timeout: 500
