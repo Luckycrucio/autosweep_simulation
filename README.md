@@ -1,5 +1,9 @@
 # Simulazione AutoSweep per Eureka
 
+![Gazebo: mondo coverage1 con la spazzatrice](images/gazebo_coverage1.png)
+
+![RViz: LiDAR e camera nel mondo coverage1](images/rviz_coverage1.png)
+
 Simulazione ROS 2 Jazzy e Gazebo Harmonic della spazzatrice autonoma Eureka.
 
 Il milestone attuale comprende il modello dei sensori, una trasmissione a triciclo
@@ -17,6 +21,8 @@ temporanea da tastiera.
 - `/odom_path` con la cronologia dell'odometria visualizzata come linea in RViz.
 - Interfaccia `/cmd_vel` condivisa basata su `geometry_msgs/msg/TwistStamped`.
 - Teleoperazione temporanea da tastiera.
+- Mondo `coverage1_world.sdf` con la mappa statica `coverage1_map` ricostruita
+  da `finer_mapping`.
 
 ## Compilazione
 
@@ -50,6 +56,21 @@ RViz usa `odom` come frame fisso e visualizza `/odom_path` con il display
 `Path`. Il convertitore aggiunge una posa ogni 0,05 m oppure ogni 0,05 rad e
 conserva al massimo 5000 pose, evitando di accumulare tutti i messaggi
 odometrici pubblicati mentre il robot è fermo.
+
+## Mondo di simulazione
+
+Il mondo predefinito è `autosweep_gazebo/worlds/coverage1_world.sdf`, che include
+il modello `autosweep_gazebo/models/coverage1_map` (mesh visuale, texture e mesh
+di collisione). Il launcher aggiunge `models/` a `GZ_SIM_RESOURCE_PATH`; un altro
+mondo si seleziona con l'argomento `world:=<file>.sdf`.
+
+Per aggiornare la mappa, copiare `coverage1_map/` e `coverage1_world.sdf` da
+`finer_mapping/outputs/coverage1/gazebo/` e, nel file del mondo:
+
+- rinominare il mondo in `sweeper_world` (nome usato dal launcher per lo spawn);
+- sostituire l'URI assoluto `file:///...` con `model://coverage1_map`.
+
+Poi ricompilare.
 
 ## Controllo da tastiera
 

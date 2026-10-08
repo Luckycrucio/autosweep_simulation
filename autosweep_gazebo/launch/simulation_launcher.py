@@ -10,19 +10,13 @@ from launch.actions import (
 )
 from launch.event_handlers import OnProcessExit
 from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
     gazebo_share = get_package_share_directory("autosweep_gazebo")
     #description_share = get_package_share_directory("autosweep_description")
-
-    world_path = os.path.join(
-        gazebo_share,
-        "worlds",
-        "world.sdf",
-    )
 
     bridge_config = os.path.join(
         gazebo_share,
@@ -57,11 +51,22 @@ def generate_launch_description():
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     launch_rviz = LaunchConfiguration("launch_rviz")
+    world = LaunchConfiguration("world")
+    models_path = LaunchConfiguration("models_path")
+
+    world_path = PathJoinSubstitution([gazebo_share, "worlds", world])
+
+    gz_resource_path = [
+        models_path,
+        os.pathsep,
+        os.environ.get("GZ_SIM_RESOURCE_PATH", ""),
+    ]
 
     gazebo = ExecuteProcess(
         cmd=["gz", "sim", "-r", "-v", "3", world_path],
         additional_env={
             "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_system_plugin_path,
+            "GZ_SIM_RESOURCE_PATH": gz_resource_path,
         },
         output="screen",
     )
@@ -175,6 +180,16 @@ def generate_launch_description():
             default_value="true",
             choices=["true", "false"],
             description="Start RViz together with the simulation",
+        ),
+        DeclareLaunchArgument(
+            "world",
+            default_value="coverage1_world.sdf",
+            description="World file inside autosweep_gazebo/worlds",
+        ),
+        DeclareLaunchArgument(
+            "models_path",
+            default_value=os.path.join(gazebo_share, "models"),
+            description="Directory containing the map models (added to GZ_SIM_RESOURCE_PATH)",
         ),
         gazebo,
         bridge,
