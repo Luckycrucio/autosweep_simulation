@@ -50,12 +50,60 @@ ros2 launch autosweep_gazebo simulation_launcher.py use_sim_time:=true
 ```
 
 Questo avvia Gazebo, il bridge ROS/Gazebo, `robot_state_publisher`, entrambi i
-controller `ros2_control`, il convertitore da odometria a path e RViz.
+controller `ros2_control`, il convertitore da odometria a path, Nav2 e RViz.
+Per avviare solo la simulazione senza Nav2 aggiungere `nav2:=false`.
 
 RViz usa `odom` come frame fisso e visualizza `/odom_path` con il display
 `Path`. Il convertitore aggiunge una posa ogni 0,05 m oppure ogni 0,05 rad e
 conserva al massimo 5000 pose, evitando di accumulare tutti i messaggi
 odometrici pubblicati mentre il robot è fermo.
+
+## Navigazione go-to (Nav2)
+
+Navigazione minima verso un obiettivo, basata solo sulla mappa statica e
+sull'odometria delle ruote.
+
+Dipendenze:
+
+```bash
+sudo apt install ros-jazzy-navigation2
+```
+
+Con `nav2:=true` (predefinito), dopo l'avvio del `tricycle_controller` il
+launcher avvia:
+
+- `map_server`, che carica `autosweep_gazebo/maps/coverage1_map.yaml` (griglia
+  `.pgm` generata da `finer_mapping/outputs/coverage1/nav2/`, nello stesso frame
+  del mondo Gazebo);
+- una TF statica `map -> odom` pari alla posa di spawn del robot (il frame della
+  mappa coincide con quello del mondo Gazebo e l'odometria parte dallo spawn);
+- `planner_server` (Smac Hybrid-A*, Reeds-Shepp), `controller_server` (MPPI con
+  modello Ackermann), `behavior_server` e `bt_navigator`, gestiti da
+  `lifecycle_manager_navigation`.
+
+I parametri sono in `autosweep_gazebo/config/nav2_params.yaml`: raggio minimo di
+curvatura 0,85 m, footprint rettangolare e `/cmd_vel` di tipo `TwistStamped`.
+Mappa e parametri si possono sostituire con `map:=<file>.yaml` e
+`nav2_params:=<file>.yaml`.
+
+Il robot viene creato in `(0.5, 0.5)` con yaw `0`: in `(0, 0)` il suo footprint
+si sovrappone a celle occupate della mappa e il planner rifiuta la partenza.
+La posa si cambia con `spawn_x:=`, `spawn_y:=` e `spawn_yaw:=` (radianti) e
+deve cadere in una zona libera della mappa.
+
+In RViz (frame fisso `map`) usare **2D Goal Pose** per inviare un obiettivo.
+Il robot non ruota sul posto: per obiettivi con forti cambi di direzione esegue
+curve ampie o brevi manovre in retromarcia.
+
+Limitazioni:
+
+- non c'è localizzazione: l'errore dell'odometria si accumula e non viene
+  corretto;
+- le costmap contengono solo la mappa statica, quindi gli ostacoli non presenti
+  nella mappa non vengono evitati.
+
+Per aggiornare la mappa copiare `coverage1_map.pgm` e `coverage1_map.yaml` da
+`finer_mapping/outputs/coverage1/nav2/` in `autosweep_gazebo/maps/`.
 
 ## Mondo di simulazione
 
@@ -130,3 +178,9 @@ verso l'alto. Un valore positivo di `angular.z` fa curvare a sinistra.
   misurarne assi e pulsanti.
 - I sensori di prossimità verranno aggiunti quando saranno disponibili le loro
   specifiche.
+- I lidar (`/lidar_front/scan`, `/lidar_rear/scan`) sono simulati e pubblicati
+  in ROS, ma la navigazione Nav2 non li usa: non c'è né localizzazione (AMCL)
+  né SLAM, e la posa del robot deriva solo dall'odometria delle ruote. La
+  navigazione go-to è quindi fortemente limitata: l'errore di posa cresce senza
+  correzione e gli ostacoli non presenti nella mappa statica non vengono rilevati
+  né evitati.
