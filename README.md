@@ -1,8 +1,6 @@
 # Simulazione AutoSweep per Eureka
 
-![Gazebo: mondo coverage1 con la spazzatrice](images/gazebo_coverage1.png)
-
-![RViz: LiDAR e camera nel mondo coverage1](images/rviz_coverage1.png)
+![Gazebo e Rviz: mondo coverage1 con la spazzatrice](images/GazeboNav2.png)
 
 Simulazione ROS 2 Jazzy e Gazebo Harmonic della spazzatrice autonoma Eureka.
 
@@ -39,6 +37,11 @@ colcon build \
 ```
 
 ## Avvio della simulazione
+
+![Navigazione go-to con Nav2: Gazebo e RViz (velocità 2,5x)](images/nav2_goto_demo.gif)
+
+Il video completo in qualità piena è disponibile in
+[images/nav2_goto_demo.mp4](images/nav2_goto_demo.mp4).
 
 Nel primo terminale, dalla radice del repository:
 

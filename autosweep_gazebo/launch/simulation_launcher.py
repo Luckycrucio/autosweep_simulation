@@ -11,6 +11,7 @@ from launch.actions import (
     GroupAction,
     OpaqueFunction,
     RegisterEventHandler,
+    Shutdown,
     TimerAction,
 )
 from launch.event_handlers import OnProcessExit, OnShutdown
@@ -50,6 +51,20 @@ def kill_stale_gazebo(context=None, timeout=5.0):
     subprocess.run(
         ["pkill", f"-{signal.SIGKILL.value}", "-f", GZ_PROCESS_PATTERN],
         check=False,
+    )
+    return []
+
+
+def install_sighup_cleanup(context):
+    """Chiude Gazebo anche quando il terminale viene chiuso (SIGHUP).
+
+    Con SIGHUP ros2 launch muore senza eseguire OnShutdown, e server/gui Gazebo,
+    che `gz sim` mette in process group separati, non ricevono il segnale.
+    """
+    signal.signal(
+        signal.SIGHUP,
+        # Termina server/gui Gazebo, poi esce come farebbe il SIGHUP di default.
+        lambda *_: (kill_stale_gazebo(timeout=3.0), os._exit(128 + signal.SIGHUP)),
     )
     return []
 
@@ -127,6 +142,8 @@ def generate_launch_description():
             "GZ_SIM_RESOURCE_PATH": gz_resource_path,
         },
         output="screen",
+        # Se Gazebo termina (es. finestra chiusa) chiude tutto il launch.
+        on_exit=Shutdown(reason="Gazebo terminato"),
     )
 
     bridge = Node(
@@ -365,6 +382,7 @@ def generate_launch_description():
         ),
         cleanup_stale_gazebo,
         cleanup_gazebo_on_shutdown,
+        OpaqueFunction(function=install_sighup_cleanup),  # Pulizia anche alla chiusura del terminale.
         gazebo,
         bridge,
         state_publisher,
