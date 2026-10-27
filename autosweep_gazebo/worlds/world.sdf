@@ -17,6 +17,8 @@
     <plugin
         filename="gz-sim-scene-broadcaster-system"
         name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-imu-system"
+        name="gz::sim::systems::Imu" />
 
     <plugin
         filename="gz-sim-sensors-system"

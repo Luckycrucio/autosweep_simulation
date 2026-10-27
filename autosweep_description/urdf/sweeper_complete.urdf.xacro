@@ -7,8 +7,9 @@
 
   <!-- Load the sensors -->
   <xacro:include filename="$(find autosweep_description)/urdf/lidar_dome.xacro" />
-
+  <xacro:include filename="$(find autosweep_description)/urdf/imu.xacro" />
   <xacro:include filename="$(find autosweep_description)/urdf/rgbd_camera.xacro" />
+
 
   <!-- Load the drivetrain -->
   <xacro:include filename="$(find autosweep_description)/urdf/drivetrain.xacro" />

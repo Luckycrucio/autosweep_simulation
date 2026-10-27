@@ -108,6 +108,12 @@
       <parent link="${name}_link" />
     </joint>
 
+    <!-- Add IMU sensor -->
+    <xacro:imu_sensor
+      name="${name}"
+      parent="${name}_link"
+      topic="${topic}/imu" />
+
   </xacro:macro>
 
 </robot>

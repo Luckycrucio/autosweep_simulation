@@ -4,22 +4,29 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Status1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /PointCloud21
         - /PointCloud21/Topic1
         - /LaserScan2/Topic1
-        - /PointCloud22
         - /PointCloud22/Topic1
         - /Camera1/Visibility1
         - /Image1/Topic1
         - /Odometry1/Topic1
         - /Odometry1/Shape1
-        - /Path1
+        - /Imu1/Topic1
+        - /Imu1/Box properties1
+        - /Imu1/Axes properties1
+        - /Imu1/Acceleration properties1
+        - /Imu2/Topic1
+        - /Imu2/Box properties1
+        - /Imu2/Axes properties1
+        - /Imu2/Acceleration properties1
+        - /Imu3/Topic1
+        - /Imu3/Box properties1
+        - /Imu3/Axes properties1
+        - /Imu3/Acceleration properties1
       Splitter Ratio: 0.49808427691459656
-    Tree Height: 439
+    Tree Height: 787
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -223,8 +230,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.571952223777771
-        Min Value: -0.14820224046707153
+        Max Value: 0.58124840259552
+        Min Value: -0.1468096375465393
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -290,8 +297,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.14765077829360962
-        Min Value: -0.14505410194396973
+        Max Value: 0.14846855401992798
+        Min Value: -0.14499568939208984
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -354,7 +361,7 @@ Visualization Manager:
       Use rainbow: true
       Value: true
     - Class: rviz_default_plugins/Camera
-      Enabled: true
+      Enabled: false
       Far Plane Distance: 100
       Image Rendering: background and overlay
       Name: Camera
@@ -365,10 +372,11 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /rgbd_camera/depth_image
-      Value: true
+      Value: false
       Visibility:
         Grid: true
         Image: true
+        Imu: true
         LaserScan: true
         Odometry: true
         Path: true
@@ -378,7 +386,7 @@ Visualization Manager:
         Value: true
       Zoom Factor: 1
     - Class: rviz_default_plugins/Image
-      Enabled: true
+      Enabled: false
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -390,7 +398,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /rgbd_camera/color/image
-      Value: true
+      Value: false
     - Angle Tolerance: 0.05000000074505806
       Class: rviz_default_plugins/Odometry
       Covariance:
@@ -458,6 +466,90 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /odom_path
       Value: true
+    - Acceleration properties:
+        Acc. vector alpha: 1
+        Acc. vector color: 255; 0; 0
+        Acc. vector scale: 0.4000000059604645
+        Derotate acceleration: false
+        Enable acceleration: true
+      Axes properties:
+        Axes scale: 1
+        Enable axes: false
+      Box properties:
+        Box alpha: 1
+        Box color: 255; 0; 0
+        Enable box: false
+        x_scale: 1
+        y_scale: 1
+        z_scale: 1
+      Class: rviz_imu_plugin/Imu
+      Enabled: false
+      Name: Imu
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /lidar_rear/imu
+      Value: false
+      fixed_frame_orientation: false
+    - Acceleration properties:
+        Acc. vector alpha: 1
+        Acc. vector color: 246; 211; 45
+        Acc. vector scale: 0.4000000059604645
+        Derotate acceleration: false
+        Enable acceleration: true
+      Axes properties:
+        Axes scale: 1
+        Enable axes: false
+      Box properties:
+        Box alpha: 1
+        Box color: 255; 0; 0
+        Enable box: false
+        x_scale: 1
+        y_scale: 1
+        z_scale: 1
+      Class: rviz_imu_plugin/Imu
+      Enabled: false
+      Name: Imu
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /rgbd_camera/imu
+      Value: false
+      fixed_frame_orientation: false
+    - Acceleration properties:
+        Acc. vector alpha: 1
+        Acc. vector color: 145; 65; 172
+        Acc. vector scale: 0.4000000059604645
+        Derotate acceleration: false
+        Enable acceleration: true
+      Axes properties:
+        Axes scale: 1
+        Enable axes: false
+      Box properties:
+        Box alpha: 1
+        Box color: 255; 0; 0
+        Enable box: false
+        x_scale: 1
+        y_scale: 1
+        z_scale: 1
+      Class: rviz_imu_plugin/Imu
+      Enabled: false
+      Name: Imu
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /lidar_front/imu
+      Value: false
+      fixed_frame_orientation: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -504,25 +596,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 16.897987365722656
+      Distance: 16.588985443115234
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.9591041803359985
-        Y: 1.1474541425704956
-        Z: 1.3475362062454224
+        X: 1.149459719657898
+        Y: 0.6557996869087219
+        Z: 0.2458927035331726
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.794797420501709
+      Pitch: 0.20479744672775269
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.750016450881958
+      Yaw: 4.7750163078308105
     Saved: ~
 Window Geometry:
   Camera:
@@ -534,7 +626,7 @@ Window Geometry:
   Hide Right Dock: true
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd00000004000000000000017e00000245fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000014d00000245000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000351fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003f00000351000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000039f00000108fc0100000003fb0000000c00430061006d0065007200610100000000000001d50000006800fffffffb0000000a0049006d00610067006501000001db000001c40000005e00fffffffb0000000a00560069006500770073030000004e00000080000002e100000197000000030000039f0000003cfc0100000002fb0000000800540069006d006501000000000000039f0000026f00fffffffb0000000800540069006d006501000000000000045000000000000000000000039f0000024500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000017e00000353fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005d00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003f00000353000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000351fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003f00000351000000a900fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000039f00000108fc0100000003fb0000000c00430061006d0065007200610000000000000001d50000006800fffffffb0000000a0049006d00610067006500000001db000001c40000005e00fffffffb0000000a00560069006500770073030000004e00000080000002e100000197000000030000039f0000003cfc0100000002fb0000000800540069006d006501000000000000039f0000026f00fffffffb0000000800540069006d006501000000000000045000000000000000000000039f0000035300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:

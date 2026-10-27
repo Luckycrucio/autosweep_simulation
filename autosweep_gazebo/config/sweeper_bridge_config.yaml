@@ -85,3 +85,34 @@
   direction: GZ_TO_ROS
   lazy: true
   qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_front/imu"
+  gz_topic_name: "/lidar_front/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_rear/imu"
+  gz_topic_name: "/lidar_rear/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/rgbd_camera/imu"
+  gz_topic_name: "/rgbd_camera/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/cmd_vel"
+  gz_topic_name: "/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/TwistStamped"
+  gz_type_name: "gz.msgs.Twist"
+  direction: GZ_TO_ROS
+  lazy: false

@@ -125,6 +125,13 @@ Poi ricompilare.
 
 ## Controllo da tastiera
 
+### Da Gazebo
+
+Oltre al terminale, il robot si può comandare dalla GUI di Gazebo tramite il
+pannello **Teleop**: selezionare `/cmd_vel`, abilitare la tastiera e usare **WASD**.
+
+### Da terminale
+
 Eseguire il nodo per la tastiera in un secondo terminale. Il terminale deve
 rimanere attivo perché il nodo legge direttamente i tasti premuti.
 
@@ -140,8 +147,6 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args \
   -p turn:=0.05
 ```
 
-Tasti verificati:
-
 | Tasto | Comando |
 | --- | --- |
 | `u` | Avanti e a sinistra |
@@ -150,9 +155,7 @@ Tasti verificati:
 | `,` | Retromarcia |
 | `k` o Spazio | Arresto |
 
-Una pressione pubblica un comando. Mantenendo premuto un tasto di movimento si
-utilizza normalmente la ripetizione della tastiera del sistema operativo. Se non
-arrivano nuovi comandi, il controller arresta il veicolo dopo 500 ms. Premere
+Se non arrivano nuovi comandi, il controller arresta il veicolo dopo 500 ms. Premere
 `Ctrl+C` per terminare il nodo della tastiera; prima di uscire pubblica un ultimo
 comando con velocità zero.
 
@@ -176,13 +179,10 @@ verso l'alto. Un valore positivo di `angular.z` fa curvare a sinistra.
   disponibili i parametri del prototipo.
 - Le ruote e i giunti di sterzata sono articolati fisicamente, ma le rispettive
   visuali mobili non sono ancora state separate dalla mesh monolitica del telaio.
-- Il controllo da tastiera è temporaneo. L'integrazione del joystick verrà
-  completata quando sarà disponibile l'hardware previsto e sarà possibile
-  misurarne assi e pulsanti.
 - I sensori di prossimità verranno aggiunti quando saranno disponibili le loro
   specifiche.
 - I lidar (`/lidar_front/scan`, `/lidar_rear/scan`) sono simulati e pubblicati
-  in ROS, ma la navigazione Nav2 non li usa: non c'è né localizzazione (AMCL)
+  in ROS, ma la navigazione Nav2 non li usa: non c'è né localizzazione
   né SLAM, e la posa del robot deriva solo dall'odometria delle ruote. La
   navigazione go-to è quindi fortemente limitata: l'errore di posa cresce senza
   correzione e gli ostacoli non presenti nella mappa statica non vengono rilevati
