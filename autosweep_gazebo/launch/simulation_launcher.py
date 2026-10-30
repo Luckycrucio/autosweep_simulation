@@ -222,7 +222,7 @@ def generate_launch_description():
         )
     )
 
-    # Senza Nav2 il frame map non esiste: RViz resta su odom.
+    # Senza Nav2 RViz resta su odom.
     rviz = Node(
         package="rviz2",
         executable="rviz2",
@@ -248,18 +248,15 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Navigazione go-to minima: nessuna localizzazione, la posa deriva solo
-    # dall'odometria delle ruote. Il frame della mappa coincide con quello del
-    # mondo Gazebo e odom nasce nella posa di spawn, quindi map -> odom e' la
-    # posa di spawn.
+    # Nessuna localizzazione: /odom e' il ground truth di Gazebo, espresso nel
+    # frame del mondo. Il frame della mappa coincide con quello del mondo,
+    # quindi map -> odom e' l'identita'. Pubblicata sempre, anche senza Nav2,
+    # per posizionare la mesh del mondo in RViz.
     map_to_odom = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="map_to_odom",
         arguments=[
-            "--x", spawn_x,
-            "--y", spawn_y,
-            "--yaw", spawn_yaw,
             "--frame-id", "map",
             "--child-frame-id", "odom",
         ],
@@ -279,7 +276,17 @@ def generate_launch_description():
     ]
     nav2_nodes = [name for _, name in nav2_servers]
 
-    nav2_actions = [map_to_odom]
+    # Stessa mesh del mondo Gazebo, visualizzata in RViz nel frame map.
+    map_mesh_publisher = Node(
+        package="autosweep_gazebo",
+        executable="map_mesh_publisher.py",
+        parameters=[{
+            "use_sim_time": use_sim_time,
+        }],
+        output="screen",
+    )
+
+    nav2_actions = []
     for package, name in nav2_servers:
         parameters = [nav2_params, {"use_sim_time": use_sim_time}]
         if name == "map_server":
@@ -304,8 +311,8 @@ def generate_launch_description():
         output="screen",
     ))
 
-    # Nav2 parte solo quando il tricycle_controller pubblica /odom e la TF
-    # odom -> base_footprint.
+    # Nav2 parte solo quando il robot e' spawnato e il tricycle_controller
+    # accetta /cmd_vel.
     start_nav2 = RegisterEventHandler(
         OnProcessExit(
             target_action=tricycle_controller_spawner,
@@ -387,6 +394,8 @@ def generate_launch_description():
         bridge,
         state_publisher,
         odom_to_path,
+        map_to_odom,
+        map_mesh_publisher,
         start_joint_state_broadcaster,
         start_tricycle_controller,
         delayed_spawn,

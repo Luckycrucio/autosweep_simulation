@@ -18,11 +18,27 @@
 
   <!-- Pose provvisoria del LiDAR anteriore -->
   <xacro:lidar_dome
+    name="lidar_front_low"
+    parent="base_link"
+    xyz="${0.7 + 0.07*sin(1.5184)} 0 ${0.00 + 0.07*cos(1.5184)}"
+    rpy="0 1.5184 0"
+    topic="lidar_front_low" />
+
+    <!-- Pose provvisoria del LiDAR anteriore -->
+  <xacro:lidar_dome
     name="lidar_front"
     parent="base_link"
-    xyz="0.7 0 0.40"
-    rpy="0 1.5707 0"
+    xyz="${0.7 + 0.02*sin(1.4137)} 0 ${0.20 + 0.02*cos(1.4137)}"
+    rpy="0 1.4137 0"
     topic="lidar_front" />
+
+    <!-- Pose provvisoria del LiDAR anteriore -->
+  <xacro:lidar_dome
+    name="lidar_front_high"
+    parent="base_link"
+    xyz="0.7 0 0.40"
+    rpy="0 1.3090 0"
+    topic="lidar_front_high" />
 
   <!-- Pose provvisoria del LiDAR posteriore -->
   <xacro:lidar_dome

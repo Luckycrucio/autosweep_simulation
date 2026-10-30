@@ -1,5 +1,5 @@
 # Parametri Nav2 per la navigazione go-to della spazzatrice AutoSweep (ROS 2 Jazzy).
-# Nessuna localizzazione: la posa deriva dall'odometria delle ruote e
+# Nessuna localizzazione: la posa deriva dal ground truth di Gazebo e
 # map -> odom e' una TF statica identita' pubblicata dal launcher.
 # Le costmap usano solo la mappa statica: gli ostacoli non presenti nella
 # mappa non vengono rilevati.

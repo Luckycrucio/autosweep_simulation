@@ -22,11 +22,13 @@ tricycle_controller:
     wheelbase: 0.777 #passo
     wheel_radius: 0.125
 
-    # Odometry calcolata dal feedback delle ruote
+    # Odometry calcolata dal feedback delle ruote: solo su
+    # /tricycle_controller/odom, la TF odom -> base_footprint arriva dal
+    # ground truth di Gazebo.
     odom_frame_id: odom
     base_frame_id: base_footprint
     open_loop: false
-    enable_odom_tf: true
+    enable_odom_tf: false
     odom_only_twist: false
 
     # TODO: Valori iniziali raccomandati, da calibrare in futuro.

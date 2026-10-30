@@ -5,7 +5,7 @@
 Simulazione ROS 2 Jazzy e Gazebo Harmonic della spazzatrice autonoma Eureka.
 
 Il milestone attuale comprende il modello dei sensori, una trasmissione a triciclo
-provvisoria, `ros2_control`, l'odometria ricavata dalle ruote e la teleoperazione
+provvisoria, `ros2_control`, l'odometria ground truth di Gazebo e la teleoperazione
 temporanea da tastiera.
 
 ## Componenti implementati
@@ -15,7 +15,9 @@ temporanea da tastiera.
 - Una ruota anteriore sterzante e motrice provvisoria.
 - Due ruote posteriori passive.
 - `joint_state_broadcaster` e `tricycle_controller`.
-- `/odom` ricavata dalle ruote e TF `odom -> base_footprint`.
+- `/odom` ground truth (posa reale del robot in Gazebo, plugin
+  `OdometryPublisher`) e TF `odom -> base_footprint`. L'odometria delle ruote
+  resta disponibile su `/tricycle_controller/odom`, ma non è usata.
 - `/odom_path` con la cronologia dell'odometria visualizzata come linea in RViz.
 - Interfaccia `/cmd_vel` condivisa basata su `geometry_msgs/msg/TwistStamped`.
 - Teleoperazione temporanea da tastiera.
@@ -64,7 +66,7 @@ odometrici pubblicati mentre il robot è fermo.
 ## Navigazione go-to (Nav2)
 
 Navigazione minima verso un obiettivo, basata solo sulla mappa statica e
-sull'odometria delle ruote.
+sull'odometria ground truth di Gazebo.
 
 Dipendenze:
 
@@ -78,8 +80,8 @@ launcher avvia:
 - `map_server`, che carica `autosweep_gazebo/maps/coverage1_map.yaml` (griglia
   `.pgm` generata da `finer_mapping/outputs/coverage1/nav2/`, nello stesso frame
   del mondo Gazebo);
-- una TF statica `map -> odom` pari alla posa di spawn del robot (il frame della
-  mappa coincide con quello del mondo Gazebo e l'odometria parte dallo spawn);
+- una TF statica identità `map -> odom` (il frame della mappa coincide con
+  quello del mondo Gazebo, in cui è espressa l'odometria ground truth);
 - `planner_server` (Smac Hybrid-A*, Reeds-Shepp), `controller_server` (MPPI con
   modello Ackermann), `behavior_server` e `bt_navigator`, gestiti da
   `lifecycle_manager_navigation`.
@@ -100,8 +102,8 @@ curve ampie o brevi manovre in retromarcia.
 
 Limitazioni:
 
-- non c'è localizzazione: l'errore dell'odometria si accumula e non viene
-  corretto;
+- non c'è localizzazione: la posa è il ground truth del simulatore, quindi la
+  navigazione non risente di errori odometrici che sul robot reale ci sarebbero;
 - le costmap contengono solo la mappa statica, quindi gli ostacoli non presenti
   nella mappa non vengono evitati.
 

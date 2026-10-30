@@ -32,7 +32,9 @@ install(
 )
 
 install(
-  PROGRAMS scripts/odom_to_path.py
+  PROGRAMS
+    scripts/odom_to_path.py
+    scripts/map_mesh_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
