@@ -16,29 +16,73 @@
   <xacro:sweeper_base_footprint child="base_link" />
   <xacro:sweeper_drivetrain parent="base_link" />
 
-  <!-- Pose provvisoria del LiDAR anteriore -->
-  <xacro:lidar_dome
-    name="lidar_front_low"
-    parent="base_link"
-    xyz="${0.7 + 0.07*sin(1.5184)} 0 ${0.00 + 0.07*cos(1.5184)}"
-    rpy="0 1.5184 0"
-    topic="lidar_front_low" />
+  <!-- LiDAR anteriori attivi: true = presente nel modello -->
+  <xacro:property name="enable_lidar_front_low" value="false" />
+  <xacro:property name="enable_lidar_front_high" value="false" />
+  <xacro:property name="enable_lidar_front_fwd" value="false" />
+  <xacro:property name="enable_lidar_front_bwd" value="false" />
 
-    <!-- Pose provvisoria del LiDAR anteriore -->
+  <!-- Posa del LiDAR anteriore intermedio: inclinazione su y e
+       spostamento lungo il proprio asse z rispetto a (0.7, 0, 0.20) -->
+  <xacro:property name="lidar_front_pitch" value="1.4137" />
+  <xacro:property name="lidar_front_ego_z" value="0.02" />
+
+  <!-- Coppia anteriore LiDAR + camera centrata sull'asse del veicolo:
+       spazio libero di 3 cm lungo y tra la cupola del LiDAR (raggio
+       0.035025) e la camera (larghezza 0.124); il punto medio tra le due
+       origini sta in y = 0, LiDAR a destra e camera a sinistra -->
+  <xacro:property name="front_pair_gap" value="0.03" />
+  <xacro:property name="front_pair_spacing" value="${0.035025 + front_pair_gap + 0.124/2}" />
+  <xacro:property name="lidar_front_y" value="${-front_pair_spacing/2}" />
+  <xacro:property name="rgbd_camera_front_y" value="${front_pair_spacing/2}" />
+
+  <!-- Pose provvisoria del LiDAR anteriore basso (disattivato) -->
+  <xacro:if value="${enable_lidar_front_low}">
+    <xacro:lidar_dome
+      name="lidar_front_low"
+      parent="base_link"
+      xyz="${0.7 + 0.07*sin(1.5184)} 0 ${0.00 + 0.07*cos(1.5184)}"
+      rpy="0 1.5184 0"
+      topic="lidar_front_low" />
+  </xacro:if>
+
+  <!-- Pose provvisoria del LiDAR anteriore -->
   <xacro:lidar_dome
     name="lidar_front"
     parent="base_link"
-    xyz="${0.7 + 0.02*sin(1.4137)} 0 ${0.20 + 0.02*cos(1.4137)}"
-    rpy="0 1.4137 0"
+    xyz="${0.7 + lidar_front_ego_z*sin(lidar_front_pitch)} ${lidar_front_y} ${0.20 + lidar_front_ego_z*cos(lidar_front_pitch)}"
+    rpy="0 ${lidar_front_pitch} 0"
     topic="lidar_front" />
 
-    <!-- Pose provvisoria del LiDAR anteriore -->
-  <xacro:lidar_dome
-    name="lidar_front_high"
-    parent="base_link"
-    xyz="0.7 0 0.40"
-    rpy="0 1.3090 0"
-    topic="lidar_front_high" />
+  <!-- Variante avanzata: +5 cm lungo z del LiDAR anteriore (disattivato) -->
+  <xacro:if value="${enable_lidar_front_fwd}">
+    <xacro:lidar_dome
+      name="lidar_front_fwd"
+      parent="base_link"
+      xyz="${0.7 + (lidar_front_ego_z + 0.05)*sin(lidar_front_pitch)} 0 ${0.20 + (lidar_front_ego_z + 0.05)*cos(lidar_front_pitch)}"
+      rpy="0 ${lidar_front_pitch} 0"
+      topic="lidar_front_fwd" />
+  </xacro:if>
+
+  <!-- Variante arretrata: -5 cm lungo z del LiDAR anteriore (disattivato) -->
+  <xacro:if value="${enable_lidar_front_bwd}">
+    <xacro:lidar_dome
+      name="lidar_front_bwd"
+      parent="base_link"
+      xyz="${0.7 + (lidar_front_ego_z - 0.05)*sin(lidar_front_pitch)} 0 ${0.20 + (lidar_front_ego_z - 0.05)*cos(lidar_front_pitch)}"
+      rpy="0 ${lidar_front_pitch} 0"
+      topic="lidar_front_bwd" />
+  </xacro:if>
+
+  <!-- Pose provvisoria del LiDAR anteriore alto (disattivato) -->
+  <xacro:if value="${enable_lidar_front_high}">
+    <xacro:lidar_dome
+      name="lidar_front_high"
+      parent="base_link"
+      xyz="0.7 0 0.40"
+      rpy="0 1.3090 0"
+      topic="lidar_front_high" />
+  </xacro:if>
 
   <!-- Pose provvisoria del LiDAR posteriore -->
   <xacro:lidar_dome
@@ -48,12 +92,19 @@
     rpy="0 -1.5707 0"
     topic="lidar_rear" />
 
-  <!-- Pose provvisoria della Intel RealSense D456 -->
+  <!-- Intel RealSense D456 alla sinistra del LiDAR anteriore: corpo
+       centrato sul centro della cupola (0.036525 lungo il suo asse z),
+       l'origine della camera e' la faccia frontale (corpo profondo 0.026).
+       Inclinata verso il basso di rgbd_camera_front_pitch e poi arretrata di
+       rgbd_camera_front_back lungo il proprio asse ottico (z ottico = x link) -->
+  <xacro:property name="lidar_front_dome_center" value="${lidar_front_ego_z + 0.036525}" />
+  <xacro:property name="rgbd_camera_front_pitch" value="0.3491" />
+  <xacro:property name="rgbd_camera_front_back" value="0.05" />
   <xacro:depth_camera
-    name="rgbd_camera"
+    name="rgbd_camera_left"
     parent="base_link"
-    xyz="0.65 0 0.50"
-    rpy="0 0 0"
-    topic="rgbd_camera" />
+    xyz="${0.7 + lidar_front_dome_center*sin(lidar_front_pitch) + 0.013 - rgbd_camera_front_back*cos(rgbd_camera_front_pitch)} ${rgbd_camera_front_y} ${0.20 + lidar_front_dome_center*cos(lidar_front_pitch) + rgbd_camera_front_back*sin(rgbd_camera_front_pitch)}"
+    rpy="0 ${rgbd_camera_front_pitch} 0"
+    topic="rgbd_camera_left" />
 
 </robot>

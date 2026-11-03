@@ -53,6 +53,38 @@
   lazy: true
   qos_profile: SENSOR_DATA
 
+- ros_topic_name: "/lidar_front_fwd/scan"
+  gz_topic_name: "/lidar_front_fwd"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_front_fwd/points"
+  gz_topic_name: "/lidar_front_fwd/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_front_bwd/scan"
+  gz_topic_name: "/lidar_front_bwd"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_front_bwd/points"
+  gz_topic_name: "/lidar_front_bwd/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
 - ros_topic_name: "/lidar_rear/scan"
   gz_topic_name: "/lidar_rear"
   ros_type_name: "sensor_msgs/msg/LaserScan"
@@ -69,49 +101,49 @@
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/image"
-  gz_topic_name: "/rgbd_camera/image"
+- ros_topic_name: "/rgbd_camera_left/image"
+  gz_topic_name: "/rgbd_camera_left/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/depth_image"
-  gz_topic_name: "/rgbd_camera/depth_image"
+- ros_topic_name: "/rgbd_camera_left/depth_image"
+  gz_topic_name: "/rgbd_camera_left/depth_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/camera_info"
-  gz_topic_name: "/rgbd_camera/camera_info"
+- ros_topic_name: "/rgbd_camera_left/camera_info"
+  gz_topic_name: "/rgbd_camera_left/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/points"
-  gz_topic_name: "/rgbd_camera/points"
+- ros_topic_name: "/rgbd_camera_left/points"
+  gz_topic_name: "/rgbd_camera_left/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
-  frame_id: "rgbd_camera_link"
+  frame_id: "rgbd_camera_left_link"
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/color/image"
-  gz_topic_name: "/rgbd_camera/color/image"
+- ros_topic_name: "/rgbd_camera_left/color/image"
+  gz_topic_name: "/rgbd_camera_left/color/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/color/camera_info"
-  gz_topic_name: "/rgbd_camera/color/camera_info"
+- ros_topic_name: "/rgbd_camera_left/color/camera_info"
+  gz_topic_name: "/rgbd_camera_left/color/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
@@ -142,6 +174,22 @@
   lazy: true
   qos_profile: SENSOR_DATA
 
+- ros_topic_name: "/lidar_front_fwd/imu"
+  gz_topic_name: "/lidar_front_fwd/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
+- ros_topic_name: "/lidar_front_bwd/imu"
+  gz_topic_name: "/lidar_front_bwd/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  lazy: true
+  qos_profile: SENSOR_DATA
+
 - ros_topic_name: "/lidar_rear/imu"
   gz_topic_name: "/lidar_rear/imu"
   ros_type_name: "sensor_msgs/msg/Imu"
@@ -150,8 +198,8 @@
   lazy: true
   qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/rgbd_camera/imu"
-  gz_topic_name: "/rgbd_camera/imu"
+- ros_topic_name: "/rgbd_camera_left/imu"
+  gz_topic_name: "/rgbd_camera_left/imu"
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS

@@ -8,9 +8,6 @@ Panels:
         - /Status1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /PointCloud22/Topic1
-        - /PointCloud23/Topic1
-        - /LaserScan2/Topic1
         - /Camera1/Visibility1
         - /Image1/Topic1
         - /Odometry1/Topic1
@@ -35,7 +32,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: lidar_front points
 Visualization Manager:
   Class: ""
   Displays:
@@ -106,17 +103,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        lidar_front_high_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         lidar_front_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lidar_front_low_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -136,12 +123,12 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        rgbd_camera_link:
+        rgbd_camera_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        rgbd_camera_link_optical:
+        rgbd_camera_left_link_optical:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -168,29 +155,7 @@ Visualization Manager:
           Value: true
         front_wheel_link:
           Value: true
-        lidar_color_frame:
-          Value: true
-        lidar_color_optical_frame:
-          Value: true
-        lidar_confidence_frame:
-          Value: true
-        lidar_confidence_optical_frame:
-          Value: true
-        lidar_depth_frame:
-          Value: true
-        lidar_depth_optical_frame:
-          Value: true
-        lidar_front_high_link:
-          Value: true
         lidar_front_link:
-          Value: true
-        lidar_front_low_link:
-          Value: true
-        lidar_infra_frame:
-          Value: true
-        lidar_infra_optical_frame:
-          Value: true
-        lidar_link:
           Value: true
         lidar_rear_link:
           Value: true
@@ -202,9 +167,9 @@ Visualization Manager:
           Value: true
         rear_right_wheel_link:
           Value: true
-        rgbd_camera_link:
+        rgbd_camera_left_link:
           Value: true
-        rgbd_camera_link_optical:
+        rgbd_camera_left_link_optical:
           Value: true
       Marker Scale: 1
       Name: TF
@@ -219,11 +184,7 @@ Visualization Manager:
                 front_steering_link:
                   front_wheel_link:
                     {}
-                lidar_front_high_link:
-                  {}
                 lidar_front_link:
-                  {}
-                lidar_front_low_link:
                   {}
                 lidar_rear_link:
                   {}
@@ -231,50 +192,16 @@ Visualization Manager:
                   {}
                 rear_right_wheel_link:
                   {}
-                rgbd_camera_link:
-                  rgbd_camera_link_optical:
+                rgbd_camera_left_link:
+                  rgbd_camera_left_link_optical:
                     {}
       Update Interval: 0
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/LaserScan
-      Color: 255; 255; 255
-      Color Transformer: Intensity
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: -999999
-      Min Color: 0; 0; 0
-      Min Intensity: 999999
-      Name: LaserScan
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-        Value: /lidar_front/scan
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 5.682389736175537
-        Min Value: -0.07928729057312012
+        Max Value: 5.679346561431885
+        Min Value: -0.08855342864990234
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -288,40 +215,7 @@ Visualization Manager:
       Max Intensity: 0
       Min Color: 0; 0; 0
       Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 2
-      Size (m): 0.009999999776482582
-      Style: Points
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-        Value: /lidar_front_high/points
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 5.684169769287109
-        Min Value: -0.09463685750961304
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 0
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
+      Name: lidar_front points
       Position Transformer: XYZ
       Selectable: true
       Size (Pixels): 5
@@ -335,12 +229,12 @@ Visualization Manager:
         Value: /lidar_front/points
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 5.61450719833374
-        Min Value: -0.08461818099021912
+        Max Value: 5.638786792755127
+        Min Value: -0.08697789907455444
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -348,13 +242,13 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 0
       Min Color: 0; 0; 0
       Min Intensity: 0
-      Name: PointCloud2
+      Name: lidar_rear points
       Position Transformer: XYZ
       Selectable: true
       Size (Pixels): 5
@@ -365,77 +259,10 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /lidar_front_low/points
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/LaserScan
-      Color: 255; 255; 255
-      Color Transformer: Intensity
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: -999999
-      Min Color: 0; 0; 0
-      Min Intensity: 999999
-      Name: LaserScan
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-        Value: /lidar_rear/scan
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 5.633574485778809
-        Min Value: -0.08901101350784302
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz_default_plugins/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 0
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 2
-      Size (m): 0.009999999776482582
-      Style: Points
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
         Value: /lidar_rear/points
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -448,13 +275,13 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
       Min Color: 0; 0; 0
       Min Intensity: 0
-      Name: PointCloud2
+      Name: rgbd_camera_left points
       Position Transformer: XYZ
       Selectable: true
       Size (Pixels): 2
@@ -465,14 +292,14 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /rgbd_camera/points
+        Value: /rgbd_camera_left/points
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Class: rviz_default_plugins/Camera
       Enabled: true
       Far Plane Distance: 100
-      Image Rendering: background and overlay
+      Image Rendering: background
       Name: Camera
       Overlay Alpha: 0.5
       Topic:
@@ -480,23 +307,24 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /rgbd_camera/depth_image
+        Value: /rgbd_camera_left/color/image
       Value: true
       Visibility:
-        Footprint: true
-        Global Costmap: true
-        Global Plan: true
-        Grid: true
-        Image: true
-        LaserScan: true
-        Map: true
-        MapMesh: true
-        Odometry: true
-        Path: true
-        PointCloud2: true
+        Footprint: false
+        Global Costmap: false
+        Global Plan: false
+        Grid: false
+        Image: false
+        Map: false
+        MapMesh: false
+        Odometry: false
+        Path: false
         RobotModel: false
         TF: false
         Value: true
+        lidar_front points: true
+        lidar_rear points: false
+        rgbd_camera_left points: false
       Zoom Factor: 1
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -510,7 +338,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /rgbd_camera/color/image
+        Value: /rgbd_camera_left/color/image
       Value: true
     - Angle Tolerance: 0.05000000074505806
       Class: rviz_default_plugins/Odometry
@@ -712,7 +540,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.0934791564941406
+      Distance: 10.013727188110352
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -727,10 +555,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5997961759567261
+      Pitch: 0.31479692459106445
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.4300178289413452
+      Yaw: 1.6750152111053467
     Saved: ~
 Window Geometry:
   Camera:
