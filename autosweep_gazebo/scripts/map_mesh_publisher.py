@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import math
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -21,6 +22,11 @@ class MapMeshPublisher(Node):
         )
         self.declare_parameter('mesh_path', default_mesh)
         self.declare_parameter('frame_id', 'map')
+        # Stessa posa dell'<include> in worlds/coverage1_world.sdf, che porta il
+        # pavimento inclinato della ricostruzione su z = 0.
+        self.declare_parameter('z', 0.0234)
+        self.declare_parameter('roll', -0.039509)
+        self.declare_parameter('pitch', 0.002548)
 
         mesh_path = str(self.get_parameter('mesh_path').value)
         if not os.path.isfile(mesh_path):
@@ -39,7 +45,14 @@ class MapMeshPublisher(Node):
         marker.mesh_resource = f'file://{mesh_path}'
         # Usa la texture referenziata dal file .mtl, come fa Gazebo.
         marker.mesh_use_embedded_materials = True
-        marker.pose.orientation.w = 1.0
+        roll = float(self.get_parameter('roll').value)
+        pitch = float(self.get_parameter('pitch').value)
+        marker.pose.position.z = float(self.get_parameter('z').value)
+        # Quaternione da roll e pitch (yaw nullo), convenzione rpy di SDF/URDF.
+        marker.pose.orientation.x = math.sin(roll / 2) * math.cos(pitch / 2)
+        marker.pose.orientation.y = math.cos(roll / 2) * math.sin(pitch / 2)
+        marker.pose.orientation.z = -math.sin(roll / 2) * math.sin(pitch / 2)
+        marker.pose.orientation.w = math.cos(roll / 2) * math.cos(pitch / 2)
         marker.scale.x = 1.0
         marker.scale.y = 1.0
         marker.scale.z = 1.0

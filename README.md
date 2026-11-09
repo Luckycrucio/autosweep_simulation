@@ -108,7 +108,14 @@ Limitazioni:
   nella mappa non vengono evitati.
 
 Per aggiornare la mappa copiare `coverage1_map.pgm` e `coverage1_map.yaml` da
-`finer_mapping/outputs/coverage1/nav2/` in `autosweep_gazebo/maps/`.
+`finer_mapping/outputs/coverage1/nav2/` in `autosweep_gazebo/maps/`. Nel file
+`.yaml` usare `free_thresh: 0.196`: con 0.25 le celle sconosciute (grigio 205)
+vengono caricate come libere.
+
+La ricostruzione `coverage1_map` non è allineata alla gravità (pavimento inclinato
+di circa 2.3°): la posa dell'`<include>` in `worlds/coverage1_world.sdf`, ripetuta
+in `scripts/map_mesh_publisher.py` per RViz, la porta in piano. Se la mesh cambia
+la posa va ricalcolata.
 
 ## Mondo di simulazione
 
@@ -169,7 +176,7 @@ verso l'alto. Un valore positivo di `angular.z` fa curvare a sinistra.
 | Topic | Tipo | Scopo |
 | --- | --- | --- |
 | `/cmd_vel` | `geometry_msgs/msg/TwistStamped` | Comando della base mobile |
-| `/odom` | `nav_msgs/msg/Odometry` | Odometria ricavata dalle ruote |
+| `/odom` | `nav_msgs/msg/Odometry` | Odometria ground truth di Gazebo |
 | `/odom_path` | `nav_msgs/msg/Path` | Cronologia delle pose per RViz |
 | `/joint_states` | `sensor_msgs/msg/JointState` | Feedback dei giunti mobili |
 | `/clock` | `rosgraph_msgs/msg/Clock` | Orologio della simulazione Gazebo |
@@ -185,7 +192,21 @@ verso l'alto. Un valore positivo di `angular.z` fa curvare a sinistra.
   specifiche.
 - I lidar (`/lidar_front/scan`, `/lidar_rear/scan`) sono simulati e pubblicati
   in ROS, ma la navigazione Nav2 non li usa: non c'è né localizzazione
-  né SLAM, e la posa del robot deriva solo dall'odometria delle ruote. La
-  navigazione go-to è quindi fortemente limitata: l'errore di posa cresce senza
-  correzione e gli ostacoli non presenti nella mappa statica non vengono rilevati
-  né evitati.
+  né SLAM, e la posa del robot è il ground truth del simulatore. La
+  navigazione go-to è quindi limitata: sul robot reale servirà una
+  localizzazione, e gli ostacoli non presenti nella mappa statica non vengono
+  rilevati né evitati.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

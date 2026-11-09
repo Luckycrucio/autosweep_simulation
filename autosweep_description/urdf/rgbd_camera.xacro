@@ -9,6 +9,12 @@
       <origin xyz="${xyz}" rpy="${rpy}" />
     </joint>
 
+    <!-- Mantiene la camera come link distinto in Gazebo invece di accorparla
+         nel link padre, come per i LiDAR -->
+    <gazebo reference="${name}_joint">
+      <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
+
     <link name="${name}_link">
       <visual>
         <origin xyz="-0.026 0 0" rpy="1.5707 0 1.5707"/>
@@ -75,6 +81,10 @@
 
         <camera>
           <horizontal_fov>1.570796327</horizontal_fov>
+
+          <!-- 0x3FFFFFFF: i due bit alti sono riservati da ogre2, il valore
+               predefinito 0xFFFFFFFF genera un warning -->
+          <visibility_mask>1073741823</visibility_mask>
 
           <image>
             <width>1280</width>

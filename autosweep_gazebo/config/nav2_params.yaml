@@ -141,6 +141,9 @@ local_costmap:
       width: 6
       height: 6
       resolution: 0.05
+      # Le celle sconosciute della mappa (fuori dall'area rilevata) restano
+      # sconosciute invece di diventare libere
+      track_unknown_space: true
       # Rettangolo in base_footprint (origine sull'asse posteriore)
       footprint: "[[1.15, 0.58], [1.15, -0.58], [-0.55, -0.58], [-0.55, 0.58]]"
       footprint_padding: 0.03
@@ -189,7 +192,9 @@ planner_server:
       downsample_costmap: false
       downsampling_factor: 1
       tolerance: 0.25
-      allow_unknown: true
+      # Nessun sensore aggiorna le costmap: lo spazio sconosciuto della mappa
+      # (fuori dall'area rilevata) non e' verificabile e non va attraversato
+      allow_unknown: false
       max_iterations: 1000000
       max_on_approach_iterations: 1000
       max_planning_time: 5.0

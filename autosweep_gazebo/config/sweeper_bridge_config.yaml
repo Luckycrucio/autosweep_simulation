@@ -1,3 +1,12 @@
+# Bridge Gazebo -> ROS dei sensori presenti nel modello (sweeper_complete.urdf.xacro).
+# I frame_id ROS dei LiDAR e delle IMU sono assegnati qui: i sensori Gazebo non
+# usano gz_frame_id, che non fa parte dello standard SDF e genera warning.
+# I sensori usano la QoS predefinita (reliable): e' compatibile sia con i
+# subscriber reliable sia con quelli best effort come RViz.
+# I LiDAR anteriori disattivati nel modello (lidar_front_low, _high, _fwd, _bwd)
+# non hanno bridge: per riattivarne uno copiare le voci di lidar_front
+# cambiando nome dei topic e frame_id.
+
 - ros_topic_name: "/clock"
   gz_topic_name: "/clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
@@ -5,109 +14,64 @@
   direction: GZ_TO_ROS
   qos_profile: CLOCK
 
+# LiDAR anteriore
 - ros_topic_name: "/lidar_front/scan"
   gz_topic_name: "/lidar_front"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
+  frame_id: "lidar_front_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/lidar_front/points"
   gz_topic_name: "/lidar_front/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
+  frame_id: "lidar_front_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/lidar_front_low/scan"
-  gz_topic_name: "/lidar_front_low"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
+- ros_topic_name: "/lidar_front/imu"
+  gz_topic_name: "/lidar_front/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
+  frame_id: "lidar_front_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
-- ros_topic_name: "/lidar_front_low/points"
-  gz_topic_name: "/lidar_front_low/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_high/scan"
-  gz_topic_name: "/lidar_front_high"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_high/points"
-  gz_topic_name: "/lidar_front_high/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_fwd/scan"
-  gz_topic_name: "/lidar_front_fwd"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_fwd/points"
-  gz_topic_name: "/lidar_front_fwd/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_bwd/scan"
-  gz_topic_name: "/lidar_front_bwd"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_bwd/points"
-  gz_topic_name: "/lidar_front_bwd/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
+# LiDAR posteriore
 - ros_topic_name: "/lidar_rear/scan"
   gz_topic_name: "/lidar_rear"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
+  frame_id: "lidar_rear_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/lidar_rear/points"
   gz_topic_name: "/lidar_rear/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
+  frame_id: "lidar_rear_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
+- ros_topic_name: "/lidar_rear/imu"
+  gz_topic_name: "/lidar_rear/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+  frame_id: "lidar_rear_link"
+  lazy: true
+
+# Camera RGB-D anteriore: immagini e camera_info hanno gia' il frame ottico
+# (optical_frame_id nel modello)
 - ros_topic_name: "/rgbd_camera_left/image"
   gz_topic_name: "/rgbd_camera_left/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgbd_camera_left/depth_image"
   gz_topic_name: "/rgbd_camera_left/depth_image"
@@ -115,7 +79,6 @@
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgbd_camera_left/camera_info"
   gz_topic_name: "/rgbd_camera_left/camera_info"
@@ -123,8 +86,8 @@
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
   lazy: true
-  qos_profile: SENSOR_DATA
 
+# I punti sono espressi negli assi del link (x in avanti), non in quelli ottici
 - ros_topic_name: "/rgbd_camera_left/points"
   gz_topic_name: "/rgbd_camera_left/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
@@ -132,7 +95,6 @@
   direction: GZ_TO_ROS
   frame_id: "rgbd_camera_left_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgbd_camera_left/color/image"
   gz_topic_name: "/rgbd_camera_left/color/image"
@@ -140,7 +102,6 @@
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
   lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgbd_camera_left/color/camera_info"
   gz_topic_name: "/rgbd_camera_left/color/camera_info"
@@ -148,64 +109,16 @@
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
   lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front/imu"
-  gz_topic_name: "/lidar_front/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_low/imu"
-  gz_topic_name: "/lidar_front_low/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_high/imu"
-  gz_topic_name: "/lidar_front_high/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_fwd/imu"
-  gz_topic_name: "/lidar_front_fwd/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_front_bwd/imu"
-  gz_topic_name: "/lidar_front_bwd/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
-
-- ros_topic_name: "/lidar_rear/imu"
-  gz_topic_name: "/lidar_rear/imu"
-  ros_type_name: "sensor_msgs/msg/Imu"
-  gz_type_name: "gz.msgs.IMU"
-  direction: GZ_TO_ROS
-  lazy: true
-  qos_profile: SENSOR_DATA
 
 - ros_topic_name: "/rgbd_camera_left/imu"
   gz_topic_name: "/rgbd_camera_left/imu"
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
+  frame_id: "rgbd_camera_left_link"
   lazy: true
-  qos_profile: SENSOR_DATA
 
+# Odometria ground truth e TF odom -> base_footprint
 - ros_topic_name: "/odom"
   gz_topic_name: "/ground_truth/odom"
   ros_type_name: "nav_msgs/msg/Odometry"
@@ -220,6 +133,7 @@
   direction: GZ_TO_ROS
   lazy: false
 
+# Teleoperazione dalla GUI di Gazebo
 - ros_topic_name: "/cmd_vel"
   gz_topic_name: "/cmd_vel"
   ros_type_name: "geometry_msgs/msg/TwistStamped"

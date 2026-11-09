@@ -65,8 +65,9 @@
         <visualize>true</visualize>
         <always_on>1</always_on>
 
+        <!-- Il frame_id ROS (${name}_link) e' assegnato dal bridge:
+             gz_frame_id non fa parte dello standard SDF e genera warning -->
         <topic>${topic}</topic>
-        <gz_frame_id>${name}_link</gz_frame_id>
         <update_rate>10</update_rate>
 
         <lidar>
@@ -100,8 +101,6 @@
           <!-- World visuals use the default flags and remain detectable;
                the JT128 visual uses 0x02, so 0x01 & 0x02 == 0. -->
           <visibility_mask>0x01</visibility_mask>
-
-          <frame_id>${name}_link</frame_id>
         </lidar>
 
       </sensor>

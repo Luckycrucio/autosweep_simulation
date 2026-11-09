@@ -8,8 +8,8 @@
         <always_on>true</always_on>
         <update_rate>200</update_rate>
         <visualize>false</visualize>
+        <!-- Il frame_id ROS (${parent}) e' assegnato dal bridge -->
         <topic>${topic}</topic>
-        <gz_frame_id>${parent}</gz_frame_id>
 
         <imu>
           <angular_velocity>

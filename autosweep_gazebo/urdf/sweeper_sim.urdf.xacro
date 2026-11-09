@@ -56,10 +56,9 @@
         $(find autosweep_gazebo)/config/sweeper_controllers.yaml
       </parameters>
 
-      <!-- L'odometria delle ruote resta su /tricycle_controller/odom, non usata -->
-      <ros>
-        <remapping> /tricycle_controller/cmd_vel:=/cmd_vel </remapping>
-      </ros>
+      <!-- Il remapping /tricycle_controller/cmd_vel -> /cmd_vel e' passato dal
+           launcher allo spawner del controller. L'odometria delle ruote resta su
+           /tricycle_controller/odom, non usata. -->
     </plugin>
   </gazebo>
 

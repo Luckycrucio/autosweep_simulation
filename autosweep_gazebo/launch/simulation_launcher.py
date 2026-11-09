@@ -140,6 +140,9 @@ def generate_launch_description():
         additional_env={
             "GZ_SIM_SYSTEM_PLUGIN_PATH": gz_system_plugin_path,
             "GZ_SIM_RESOURCE_PATH": gz_resource_path,
+            # Nasconde i warning interni di Qt della GUI di Gazebo ("Binding loop
+            # detected" nei dialoghi QML); i warning di Gazebo restano visibili.
+            "QT_LOGGING_RULES": "default.warning=false",
         },
         output="screen",
         # Se Gazebo termina (es. finestra chiusa) chiude tutto il launch.
@@ -199,6 +202,9 @@ def generate_launch_description():
             "tricycle_controller",
             "--controller-manager", "/controller_manager",
             "--param-file", controller_config,
+            # Il remapping va al nodo del controller: passarlo al
+            # controller_manager tramite il plugin Gazebo e' deprecato.
+            "--controller-ros-args", "-r /tricycle_controller/cmd_vel:=/cmd_vel",
         ],
         output="screen",
     )

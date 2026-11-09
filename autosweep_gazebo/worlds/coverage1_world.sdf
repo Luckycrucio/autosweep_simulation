@@ -8,6 +8,8 @@
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
     <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <!-- Necessario perche' i sensori IMU del robot pubblichino -->
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
@@ -23,8 +25,14 @@
       <specular>0.05 0.05 0.05 1</specular>
       <direction>-0.3 0.2 -0.9</direction>
     </light>
+    <!-- La ricostruzione non e' allineata alla gravita': il pavimento e' un piano
+         inclinato di 2.26 deg (lungo y) e 0.15 deg (lungo x). Questa posa lo porta
+         su z = 0, cosi' la mappa 2D di Nav2 giace sul pavimento. Lo spostamento in
+         xy e' sotto 2 cm, la mappa 2D resta allineata agli ostacoli.
+         La stessa posa e' usata da scripts/map_mesh_publisher.py per RViz. -->
     <include>
       <uri>model://coverage1_map</uri>
+      <pose>0 0 0.0234 -0.039509 0.002548 0</pose>
     </include>
   </world>
 </sdf>
